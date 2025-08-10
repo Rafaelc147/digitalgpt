@@ -183,10 +183,10 @@
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
     </div>
 
-    <div class="search-container" style="display:flex;justify-content:center;padding:1rem 2rem;background:rgba(255,255,255,.95);">
-      <input type="text" id="search-bar" placeholder="Buscar productos..." style="width:50%;padding:.8rem 1.5rem;border-radius:25px 0 0 25px;border:1px solid #ddd;border-right:none;font-size:1rem;">
-      <button class="search-btn" style="padding:.8rem 1.5rem;border-radius:0 25px 25px 0;border:1px solid #ddd;background:#f8f8f8;cursor:pointer;">🔍</button>
-    </div>
+    <form class="search-container" action="buscar.php" method="GET" style="display:flex;justify-content:center;padding:1rem 2rem;background:rgba(255,255,255,.95);">
+      <input type="text" id="search-bar" name="q" placeholder="Buscar productos..." style="width:50%;padding:.8rem 1.5rem;border-radius:25px 0 0 25px;border:1px solid #ddd;border-right:none;font-size:1rem;">
+      <button class="search-btn" type="submit" style="padding:.8rem 1.5rem;border-radius:0 25px 25px 0;border:1px solid #ddd;background:#f8f8f8;cursor:pointer;">🔍</button>
+    </form>
   </header>
 
   <section class="hero">
