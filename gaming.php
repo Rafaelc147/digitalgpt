@@ -168,16 +168,16 @@
   <header>
     <div class="header-content">
       <div class="logo">
-        <a href="index.html" style="text-decoration:none;color:inherit;"><h1>DIGITAL RP</h1></a>
+        <a href="index.php" style="text-decoration:none;color:inherit;"><h1>DIGITAL RP</h1></a>
       </div>
       <nav>
         <ul>
-          <li><a href="componentes.html">Componentes</a></li>
-          <li><a href="audio.html">Audio</a></li>
-          <li><a href="cableado.html">Cableado</a></li>
-          <li><a href="gaming.html" class="active">Gaming</a></li>
-          <li><a href="electronica.html">Electrónica</a></li>
-          <li><a href="varios.html">Varios</a></li>
+          <li><a href="componentes.php">Componentes</a></li>
+          <li><a href="audio.php">Audio</a></li>
+          <li><a href="cableado.php">Cableado</a></li>
+          <li><a href="gaming.php" class="active">Gaming</a></li>
+          <li><a href="electronica.php">Electrónica</a></li>
+          <li><a href="varios.php">Varios</a></li>
         </ul>
       </nav>
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
