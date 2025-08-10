@@ -168,25 +168,25 @@
   <header>
     <div class="header-content">
       <div class="logo">
-        <a href="index.html" style="text-decoration:none;color:inherit;"><h1>DIGITAL RP</h1></a>
+        <a href="index.php" style="text-decoration:none;color:inherit;"><h1>DIGITAL RP</h1></a>
       </div>
       <nav>
         <ul>
-          <li><a href="componentes.html">Componentes</a></li>
-          <li><a href="audio.html">Audio</a></li>
-          <li><a href="cableado.html">Cableado</a></li>
-          <li><a href="gaming.html" class="active">Gaming</a></li>
-          <li><a href="electronica.html">Electrónica</a></li>
-          <li><a href="varios.html">Varios</a></li>
+          <li><a href="componentes.php">Componentes</a></li>
+          <li><a href="audio.php">Audio</a></li>
+          <li><a href="cableado.php">Cableado</a></li>
+          <li><a href="gaming.php" class="active">Gaming</a></li>
+          <li><a href="electronica.php">Electrónica</a></li>
+          <li><a href="varios.php">Varios</a></li>
         </ul>
       </nav>
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
     </div>
 
-    <div class="search-container" style="display:flex;justify-content:center;padding:1rem 2rem;background:rgba(255,255,255,.95);">
-      <input type="text" id="search-bar" placeholder="Buscar productos..." style="width:50%;padding:.8rem 1.5rem;border-radius:25px 0 0 25px;border:1px solid #ddd;border-right:none;font-size:1rem;">
-      <button class="search-btn" style="padding:.8rem 1.5rem;border-radius:0 25px 25px 0;border:1px solid #ddd;background:#f8f8f8;cursor:pointer;">🔍</button>
-    </div>
+    <form class="search-container" action="buscar.php" method="GET" style="display:flex;justify-content:center;padding:1rem 2rem;background:rgba(255,255,255,.95);">
+      <input type="text" id="search-bar" name="q" placeholder="Buscar productos..." style="width:50%;padding:.8rem 1.5rem;border-radius:25px 0 0 25px;border:1px solid #ddd;border-right:none;font-size:1rem;">
+      <button class="search-btn" type="submit" style="padding:.8rem 1.5rem;border-radius:0 25px 25px 0;border:1px solid #ddd;background:#f8f8f8;cursor:pointer;">🔍</button>
+    </form>
   </header>
 
   <section class="hero">
