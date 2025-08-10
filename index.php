@@ -760,10 +760,10 @@
                 🛒 Carrito <span class="cart-count" id="cart-count">0</span>
             </a>
         </div>
-        <div class="search-container">
-            <input type="text" id="search-bar" placeholder="Buscar productos...">
-            <button class="search-btn">🔍</button>
-        </div>
+        <form class="search-container" action="buscar.php" method="GET">
+            <input type="text" id="search-bar" name="q" placeholder="Buscar productos...">
+            <button class="search-btn" type="submit">🔍</button>
+        </form>
     </header>
 
     <section class="hero">
