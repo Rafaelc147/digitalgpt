@@ -1,5 +1,5 @@
-async function agregarAlCarrito(id){
-    await fetch(`carrito.php?action=add&id=${id}`);
+async function agregarAlCarrito(idProducto){
+    await fetch(`carrito.php?action=add&id=${idProducto}`);
     if (typeof mostrarNotificacion === 'function') {
         mostrarNotificacion('Producto agregado al carrito');
     }
