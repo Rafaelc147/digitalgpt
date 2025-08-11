@@ -605,22 +605,24 @@
             color: #667eea;
         }
 
-        .checkout-btn {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
+        .payment-methods {
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
         }
 
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        .payment-methods h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .pay-btn {
+            display: block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem;
+            border-radius: 20px;
+            text-decoration: none;
+            margin: 0.3rem 0;
         }
 
         /* Footer */
@@ -881,7 +883,12 @@
             <div class="cart-total">
                 Total: $<span id="cart-total">0</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">Proceder al Pago</button>
+            <div class="payment-methods" id="payment-methods">
+                <h4>Métodos de Pago</h4>
+                <a href="https://checkout.wompi.co" target="_blank" class="pay-btn">Wompi</a>
+                <a href="https://www.mercadopago.com" target="_blank" class="pay-btn">MercadoPago</a>
+                <a href="https://www.pse.com.co" target="_blank" class="pay-btn">PSE</a>
+            </div>
         </div>
     </div>
 
@@ -899,6 +906,7 @@
         </div>
     </footer>
 
+    <script src="carrito.js"></script>
     <script>
         // Datos de productos con sistema de imágenes
         const productos = {
@@ -937,120 +945,18 @@
         };
 
         // Carrito de compras
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-        // Función para agregar al carrito (reutilizada por el carrusel)
         function agregarAlCarrito(id) {
             let producto = null;
             for (let categoria in productos) {
-                producto = productos[categoria].find(p => p.id === id);
-                if (producto) break;
-            }
-
-            if (producto) {
-                carrito.push(producto);
-                localStorage.setItem('carrito', JSON.stringify(carrito));
-                actualizarCarrito();
-                mostrarNotificacion('Producto agregado al carrito');
-            }
-        }
-
-        // Función para actualizar el carrito
-        function actualizarCarrito() {
-            const cartCount = document.getElementById('cart-count');
-            const cartItems = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
-
-            cartCount.textContent = carrito.length;
-
-            cartItems.innerHTML = '';
-            let total = 0;
-
-            carrito.forEach((item, index) => {
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <span>${item.nombre}</span>
-                    <span>$${item.precio.toLocaleString()}</span>
-                    <button onclick="eliminarDelCarrito(${index})" style="background: #ff4757; color: white; border: none; padding: 0.2rem 0.5rem; border-radius: 5px; cursor: pointer;">×</button>
-                `;
-                cartItems.appendChild(cartItem);
-                total += item.precio;
-            });
-
-            cartTotal.textContent = total.toLocaleString();
-        }
-
-        // Función para eliminar del carrito
-        function eliminarDelCarrito(index) {
-            carrito.splice(index, 1);
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            actualizarCarrito();
-        }
-
-        // Función para alternar el carrito
-        function toggleCart() {
-            const cartModal = document.getElementById('cart-modal');
-            cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Función para proceder al pago
-        function checkout() {
-            if (carrito.length === 0) {
-                alert('Tu carrito está vacío');
-                return;
-            }
-
-            // Crear mensaje para WhatsApp
-            let mensaje = "Hola! Quiero hacer el siguiente pedido:%0A%0A";
-            let total = 0;
-
-            carrito.forEach(item => {
-                mensaje += `• ${item.nombre} - $${item.precio.toLocaleString()}%0A`;
-                total += item.precio;
-            });
-
-            mensaje += `%0ATotal: $${total.toLocaleString()}%0A%0A¿Podrían confirmar disponibilidad y método de pago?`;
-
-            // Abrir WhatsApp con el mensaje
-            window.open(`https://wa.me/573001234567?text=${mensaje}`, '_blank');
-        }
-
-        // Función para mostrar notificaciones
-        function mostrarNotificacion(mensaje) {
-            const notificacion = document.createElement('div');
-            notificacion.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: #28a745;
-                color: white;
-                padding: 15px 25px;
-                border-radius: 8px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                z-index: 3000;
-                animation: fadeInOut 3s ease;
-            `;
-            notificacion.textContent = mensaje;
-            document.body.appendChild(notificacion);
-
-            // Crear animación
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fadeInOut {
-                    0% { opacity: 0; transform: translateY(-20px); }
-                    10% { opacity: 1; transform: translateY(0); }
-                    90% { opacity: 1; transform: translateY(0); }
-                    100% { opacity: 0; transform: translateY(-20px); }
+                const encontrado = productos[categoria].find(p => p.id === id);
+                if (encontrado) {
+                    producto = encontrado;
+                    break;
                 }
-            `;
-            document.head.appendChild(style);
-
-            // Eliminar después de 3 segundos
-            setTimeout(() => {
-                if (notificacion.parentElement) document.body.removeChild(notificacion);
-                if (style.parentElement) document.head.removeChild(style);
-            }, 3000);
+            }
+            if (producto) {
+                agregarProductoCarrito(producto);
+            }
         }
 
         /* ============================

@@ -152,7 +152,9 @@
     .close-cart{background:none;border:none;font-size:1.6rem;cursor:pointer;color:#222}
     .cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
     .cart-total{font-size:1.15rem;font-weight:700;text-align:right;margin-top:12px;color:#222}
-    .checkout-btn{background:linear-gradient(45deg,#28a745,#20c997);color:#fff;padding:12px;border:none;border-radius:12px;font-weight:800;cursor:pointer;width:100%;margin-top:12px}
+    .payment-methods{margin-top:1rem;text-align:center;display:none}
+    .payment-methods h4{margin-bottom:.5rem}
+    .pay-btn{display:block;background:linear-gradient(45deg,#667eea,#764ba2);color:#fff;padding:.7rem;border-radius:20px;text-decoration:none;margin:.3rem 0}
 
     footer{background:#333;color:white;padding:3rem 2rem 1rem;text-align:center}
     .footer-content{max-width:1200px;margin:0 auto}
@@ -172,14 +174,14 @@
       </div>
       <nav>
         <ul>
-          <li><a href="componentes.php">Componentes</a></li>
-          <li><a href="audio.php">Audio</a></li>
-          <li><a href="cableado.php">Cableado</a></li>
-          <li><a href="gaming.php" class="active">Gaming</a></li>
-          <li><a href="electronica.php">Electrónica</a></li>
-          <li><a href="varios.php">Varios</a></li>
-        </ul>
-      </nav>
+        <li><a href="componentes.php">Componentes</a></li>
+        <li><a href="audio.php">Audio</a></li>
+        <li><a href="cableado.php">Cableado</a></li>
+        <li><a href="gaming.php" class="active">Gaming</a></li>
+        <li><a href="electronica.php">Electrónica</a></li>
+        <li><a href="varios.php">Varios</a></li>
+      </ul>
+    </nav>
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
     </div>
 
@@ -259,7 +261,12 @@
       </div>
       <div id="cart-items"></div>
       <div class="cart-total">Total: $<span id="cart-total">0</span></div>
-      <button class="checkout-btn" onclick="checkout()">🟢 Proceder al Pago</button>
+      <div class="payment-methods" id="payment-methods">
+        <h4>Métodos de Pago</h4>
+        <a href="https://checkout.wompi.co" target="_blank" class="pay-btn">Wompi</a>
+        <a href="https://www.mercadopago.com" target="_blank" class="pay-btn">MercadoPago</a>
+        <a href="https://www.pse.com.co" target="_blank" class="pay-btn">PSE</a>
+      </div>
     </div>
   </div>
 
@@ -275,8 +282,9 @@
       <p>Visítanos en: <strong>digitalrp.store</strong></p>
       <p>📱 WhatsApp: +57 300 123 4567 | ✉️ info@digitalrp.store</p>
     </div>
-  </footer>
+</footer>
 
+  <script src="carrito.js"></script>
   <script>
     /***** Datos de productos (igual a lo que tenías) *****/
     const productosGaming = [
@@ -292,60 +300,15 @@
       { id:10, nombre:"Volante Gamer Force Feedback", precio:1800000, imagenes:["https://images.unsplash.com/photo-1576153192396-180ecef15b0c?q=80&w=1974"], descripcion:"Volante con force feedback 900° y pedales metálicos", marca:"LOGITECH" }
     ];
 
-    // carrito
-    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    // animación de contador
+    function animarCarrito(){ const cc = document.getElementById('cart-count'); cc.classList.add('animate'); setTimeout(()=>cc.classList.remove('animate'),500); }
 
-    // notificación breve
-    function mostrarNotificacion(mensaje){
-      const n = document.createElement('div');
-      n.style.cssText = 'position:fixed;top:100px;right:20px;background:linear-gradient(45deg,#00eeff,#ff00aa);color:#fff;padding:12px 18px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.24);z-index:4000;font-weight:700';
-      n.textContent = mensaje;
-      document.body.appendChild(n);
-      setTimeout(()=> n.remove(),2400);
-    }
-
-    // agregar al carrito
     function agregarAlCarrito(id){
       const producto = productosGaming.find(p=>p.id===id);
       if(producto){
-        carrito.push(producto);
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        actualizarCarrito();
+        agregarProductoCarrito(producto);
         animarCarrito();
-        mostrarNotificacion('Producto agregado al carrito');
       }
-    }
-    function animarCarrito(){ const cc = document.getElementById('cart-count'); cc.classList.add('animate'); setTimeout(()=>cc.classList.remove('animate'),500); }
-
-    function actualizarCarrito(){
-      const cartCount = document.getElementById('cart-count');
-      const cartItems = document.getElementById('cart-items');
-      const cartTotal = document.getElementById('cart-total');
-      cartCount.textContent = carrito.length;
-      cartItems.innerHTML = '';
-      let total = 0;
-      carrito.forEach((item, index) => {
-        total += item.precio;
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `<span>${item.nombre}</span><span>$${item.precio.toLocaleString()}</span>\n          <button onclick="eliminarDelCarrito(${index})" style="background:#ff4757;color:#fff;border:none;padding:.3rem .6rem;border-radius:5px;cursor:pointer">×</button>`;
-        cartItems.appendChild(div);
-      });
-      cartTotal.textContent = total.toLocaleString();
-    }
-    function eliminarDelCarrito(i){ carrito.splice(i,1); localStorage.setItem('carrito',JSON.stringify(carrito)); actualizarCarrito(); }
-
-    function toggleCart(){
-      const m = document.getElementById('cart-modal');
-      m.style.display = m.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function checkout(){
-      if(carrito.length===0){ alert('Tu carrito está vacío'); return; }
-      let msg="Hola! Quiero hacer el siguiente pedido de productos gaming:%0A%0A"; let total=0;
-      carrito.forEach(i=>{ msg += `• ${i.nombre} - $${i.precio.toLocaleString()}%0A`; total+=i.precio; });
-      msg += `%0ATotal: $${total.toLocaleString()}%0A%0AMi información:%0ANombre:%0ADirección:%0ATel:`;
-      window.open(`https://wa.me/573001234567?text=${msg}`,'_blank');
     }
 
     /* ====== GRID RENDER ====== */

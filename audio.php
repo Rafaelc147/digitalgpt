@@ -295,23 +295,25 @@ nav a:hover {
     color: #667eea;
 }
 
-.checkout-btn {
-    background: linear-gradient(45deg, #28a745, #20c997);
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 25px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
+        .payment-methods {
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
 
-.checkout-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-}
+        .payment-methods h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .pay-btn {
+            display: block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.7rem;
+            border-radius: 20px;
+            text-decoration: none;
+            margin: 0.3rem 0;
+        }
 
 .whatsapp-float {
     position: fixed;
@@ -608,10 +610,16 @@ footer strong {
         <div class="cart-total">
             Total: $<span id="cart-total">0</span>
         </div>
-        <button class="checkout-btn" onclick="checkout()">Proceder al Pago</button>
+        <div class="payment-methods" id="payment-methods">
+            <h4>Métodos de Pago</h4>
+            <a href="https://checkout.wompi.co" target="_blank" class="pay-btn">Wompi</a>
+            <a href="https://www.mercadopago.com" target="_blank" class="pay-btn">MercadoPago</a>
+            <a href="https://www.pse.com.co" target="_blank" class="pay-btn">PSE</a>
+        </div>
     </div>
 </div>
 
+<script src="carrito.js"></script>
 <script>
 // ===============================
 // DATOS DE PRODUCTOS AUDIO
@@ -944,7 +952,10 @@ window.addEventListener('DOMContentLoaded', cargarProductosAudio);
 // FUNCIONES EXTRA (EJEMPLO)
 // ===============================
 function agregarAlCarrito(idProducto) {
-    alert(`Producto ${idProducto} agregado al carrito (aquí puedes poner la lógica real)`);
+    const producto = productosAudio.find(p => p.id === idProducto);
+    if (producto) {
+        agregarProductoCarrito(producto);
+    }
 }
 </script>
 
