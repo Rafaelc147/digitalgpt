@@ -172,14 +172,15 @@
       </div>
       <nav>
         <ul>
-          <li><a href="componentes.php">Componentes</a></li>
-          <li><a href="audio.php">Audio</a></li>
-          <li><a href="cableado.php">Cableado</a></li>
-          <li><a href="gaming.php" class="active">Gaming</a></li>
-          <li><a href="electronica.php">Electrónica</a></li>
-          <li><a href="varios.php">Varios</a></li>
-        </ul>
-      </nav>
+        <li><a href="componentes.php">Componentes</a></li>
+        <li><a href="audio.php">Audio</a></li>
+        <li><a href="cableado.php">Cableado</a></li>
+        <li><a href="gaming.php" class="active">Gaming</a></li>
+        <li><a href="electronica.php">Electrónica</a></li>
+        <li><a href="varios.php">Varios</a></li>
+        <li><a href="metodos_pago.php">Métodos de Pago</a></li>
+      </ul>
+    </nav>
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
     </div>
 
@@ -342,10 +343,7 @@
 
     function checkout(){
       if(carrito.length===0){ alert('Tu carrito está vacío'); return; }
-      let msg="Hola! Quiero hacer el siguiente pedido de productos gaming:%0A%0A"; let total=0;
-      carrito.forEach(i=>{ msg += `• ${i.nombre} - $${i.precio.toLocaleString()}%0A`; total+=i.precio; });
-      msg += `%0ATotal: $${total.toLocaleString()}%0A%0AMi información:%0ANombre:%0ADirección:%0ATel:`;
-      window.open(`https://wa.me/573001234567?text=${msg}`,'_blank');
+      window.location.href = 'metodos_pago.php';
     }
 
     /* ====== GRID RENDER ====== */

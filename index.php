@@ -754,6 +754,7 @@
                     <li><a href="gaming.php">Gaming</a></li>
                     <li><a href="electronica.php">Electrónica</a></li>
                     <li><a href="varios.php">Varios</a></li>
+                    <li><a href="metodos_pago.php">Métodos de Pago</a></li>
                 </ul>
             </nav>
             <a href="#" class="cart-btn" onclick="toggleCart()">
@@ -1001,19 +1002,7 @@
                 return;
             }
 
-            // Crear mensaje para WhatsApp
-            let mensaje = "Hola! Quiero hacer el siguiente pedido:%0A%0A";
-            let total = 0;
-
-            carrito.forEach(item => {
-                mensaje += `• ${item.nombre} - $${item.precio.toLocaleString()}%0A`;
-                total += item.precio;
-            });
-
-            mensaje += `%0ATotal: $${total.toLocaleString()}%0A%0A¿Podrían confirmar disponibilidad y método de pago?`;
-
-            // Abrir WhatsApp con el mensaje
-            window.open(`https://wa.me/573001234567?text=${mensaje}`, '_blank');
+            window.location.href = 'metodos_pago.php';
         }
 
         // Función para mostrar notificaciones
