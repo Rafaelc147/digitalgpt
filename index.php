@@ -756,6 +756,7 @@
                     <li><a href="gaming.php">Gaming</a></li>
                     <li><a href="electronica.php">Electrónica</a></li>
                     <li><a href="varios.php">Varios</a></li>
+<li><a href="metodos_pago.php">Métodos de Pago</a></li>
                 </ul>
             </nav>
             <a href="#" class="cart-btn" onclick="toggleCart()">
@@ -944,20 +945,124 @@
             ]
         };
 
-        // Carrito de compras
-        function agregarAlCarrito(id) {
-            let producto = null;
-            for (let categoria in productos) {
-                const encontrado = productos[categoria].find(p => p.id === id);
-                if (encontrado) {
-                    producto = encontrado;
-                    break;
-                }
-            }
-            if (producto) {
-                agregarProductoCarrito(producto);
-            }
-        }
+<script>
+// Carrito persistente
+let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+
+function guardarCarrito(){
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+// Reutilizable: agrega (o incrementa qty) y refresca UI
+function agregarProductoCarrito(producto){
+  const precio = Number(producto.precio ?? producto.precio_venta ?? 0);
+  const idx = carrito.findIndex(p => p.id === producto.id);
+  if (idx >= 0){
+    carrito[idx].qty = Number(carrito[idx].qty || 1) + 1;
+  } else {
+    carrito.push({
+      id: producto.id,
+      nombre: producto.nombre,
+      precio: precio,
+      qty: 1,
+      imagen_url: producto.imagen_url || ''
+    });
+  }
+  guardarCarrito();
+  actualizarCarrito();
+  mostrarNotificacion('Producto agregado al carrito');
+}
+
+// Llama a la función de arriba encontrando el producto por id en "productos"
+function agregarAlCarrito(id){
+  let producto = null;
+  for (const categoria in productos){
+    const encontrado = (productos[categoria] || []).find(p => p.id === id);
+    if (encontrado){ producto = encontrado; break; }
+  }
+  if (producto) agregarProductoCarrito(producto);
+}
+
+// Refresca el contador, el listado y el total
+function actualizarCarrito(){
+  const cartCount = document.getElementById('cart-count');
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+
+  if (cartItems) cartItems.innerHTML = '';
+  let total = 0;
+
+  carrito.forEach((item, index) => {
+    const qty = Number(item.qty || 1);
+    const lineTotal = Number(item.precio) * qty;
+    total += lineTotal;
+
+    if (cartItems){
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <span>${item.nombre} x${qty}</span>
+        <span>$${lineTotal.toLocaleString()}</span>
+        <button onclick="eliminarDelCarrito(${index})"
+          style="background:#ff4757;color:#fff;border:none;padding:.2rem .5rem;border-radius:5px;cursor:pointer">×</button>
+      `;
+      cartItems.appendChild(div);
+    }
+  });
+
+  if (cartCount) cartCount.textContent = String(carrito.length);
+  if (cartTotal) cartTotal.textContent = total.toLocaleString();
+  guardarCarrito();
+}
+
+function eliminarDelCarrito(index){
+  carrito.splice(index, 1);
+  actualizarCarrito();
+}
+
+function toggleCart(){
+  const cartModal = document.getElementById('cart-modal');
+  if (cartModal){
+    cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
+  }
+}
+
+function checkout(){
+  if (carrito.length === 0){
+    alert('Tu carrito está vacío');
+    return;
+  }
+  window.location.href = 'metodos_pago.php';
+}
+
+function mostrarNotificacion(mensaje){
+  const n = document.createElement('div');
+  n.style.cssText = `
+    position: fixed; top: 100px; right: 20px; z-index: 3000;
+    background: #28a745; color: #fff; padding: 12px 18px; border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.2); animation: fadeInOut 3s ease;
+  `;
+  n.textContent = mensaje;
+  document.body.appendChild(n);
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-20px); }
+      10%,90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  setTimeout(() => {
+    if (n.parentNode) n.parentNode.removeChild(n);
+    if (style.parentNode) style.parentNode.removeChild(style);
+  }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', actualizarCarrito);
+</script>
 
         /* ============================
            NUEVO: CARRUSEL DINÁMICO (solo esta parte cambió)

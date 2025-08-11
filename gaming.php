@@ -180,6 +180,9 @@
         <li><a href="gaming.php" class="active">Gaming</a></li>
         <li><a href="electronica.php">Electrónica</a></li>
         <li><a href="varios.php">Varios</a></li>
+<li><a href="varios.php">Varios</a></li>
+<li><a href="metodos_pago.php">Métodos de Pago</a></li>
+
       </ul>
     </nav>
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
@@ -310,6 +313,67 @@
         animarCarrito();
       }
     }
+let carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+
+function animarCarrito(){
+  const cc = document.getElementById('cart-count');
+  if (!cc) return;
+  cc.classList.add('animate');
+  setTimeout(() => cc.classList.remove('animate'), 500);
+}
+
+function actualizarCarrito(){
+  const cartCount = document.getElementById('cart-count');
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+
+  if (cartItems) cartItems.innerHTML = '';
+
+  let total = 0;
+  carrito.forEach((item, index) => {
+    const qty = Number(item.qty ?? 1);
+    const precio = Number(item.precio ?? item.precio_venta ?? 0);
+    total += precio * qty;
+
+    if (cartItems) {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <span>${item.nombre}</span>
+        <span>$${(precio * qty).toLocaleString()}</span>
+        <button type="button" onclick="eliminarDelCarrito(${index})"
+          style="background:#ff4757;color:#fff;border:none;padding:.3rem .6rem;border-radius:5px;cursor:pointer">×</button>
+      `;
+      cartItems.appendChild(div);
+    }
+  });
+
+  if (cartCount) cartCount.textContent = String(carrito.length);
+  if (cartTotal) cartTotal.textContent = total.toLocaleString();
+
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+function eliminarDelCarrito(i){
+  carrito.splice(i, 1);
+  actualizarCarrito();
+}
+
+function toggleCart(){
+  const m = document.getElementById('cart-modal');
+  if (!m) return;
+  m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+}
+
+function checkout(){
+  if (carrito.length === 0){
+    alert('Tu carrito está vacío');
+    return;
+  }
+  window.location.href = 'metodos_pago.php';
+}
+
+document.addEventListener('DOMContentLoaded', actualizarCarrito);
 
     /* ====== GRID RENDER ====== */
     function cargarProductosGaming(){

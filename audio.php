@@ -571,6 +571,7 @@ footer strong {
                     <li><a href="gaming.php">Gaming</a></li>
                     <li><a href="electronica.php">Electrónica</a></li>
                     <li><a href="varios.php">Varios</a></li>
+                    <li><a href="metodos_pago.php">Métodos de Pago</a></li>
                 </ul>
             </nav>
             <a href="#" class="cart-btn" onclick="toggleCart()">
