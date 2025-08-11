@@ -1,0 +1,40 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state"
+    ],
+    "content-hash": "dummy",
+    "packages": [
+        {
+            "name": "mercadopago/dx-php",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mercadopago/sdk-php.git",
+                "reference": "master"
+            },
+            "require": {
+                "php": ">=7.1"
+            }
+        },
+        {
+            "name": "phpmailer/phpmailer",
+            "version": "6.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPMailer/PHPMailer.git",
+                "reference": "master"
+            },
+            "require": {
+                "php": ">=5.5"
+            }
+        }
+    ],
+    "packages-dev": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}
