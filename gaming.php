@@ -168,25 +168,25 @@
   <header>
     <div class="header-content">
       <div class="logo">
-        <a href="index.html" style="text-decoration:none;color:inherit;"><h1>DIGITAL RP</h1></a>
+        <a href="index.php" style="text-decoration:none;color:inherit;"><h1>DIGITAL RP</h1></a>
       </div>
       <nav>
         <ul>
-          <li><a href="componentes.html">Componentes</a></li>
-          <li><a href="audio.html">Audio</a></li>
-          <li><a href="cableado.html">Cableado</a></li>
-          <li><a href="gaming.html" class="active">Gaming</a></li>
-          <li><a href="electronica.html">Electrónica</a></li>
-          <li><a href="varios.html">Varios</a></li>
+          <li><a href="componentes.php">Componentes</a></li>
+          <li><a href="audio.php">Audio</a></li>
+          <li><a href="cableado.php">Cableado</a></li>
+          <li><a href="gaming.php" class="active">Gaming</a></li>
+          <li><a href="electronica.php">Electrónica</a></li>
+          <li><a href="varios.php">Varios</a></li>
         </ul>
       </nav>
       <a href="#" class="cart-btn" onclick="toggleCart()">🛒 Carrito <span class="cart-count" id="cart-count">0</span></a>
     </div>
 
-    <div class="search-container" style="display:flex;justify-content:center;padding:1rem 2rem;background:rgba(255,255,255,.95);">
-      <input type="text" id="search-bar" placeholder="Buscar productos..." style="width:50%;padding:.8rem 1.5rem;border-radius:25px 0 0 25px;border:1px solid #ddd;border-right:none;font-size:1rem;">
-      <button class="search-btn" style="padding:.8rem 1.5rem;border-radius:0 25px 25px 0;border:1px solid #ddd;background:#f8f8f8;cursor:pointer;">🔍</button>
-    </div>
+    <form class="search-container" action="buscar.php" method="GET" style="display:flex;justify-content:center;padding:1rem 2rem;background:rgba(255,255,255,.95);">
+      <input type="text" id="search-bar" name="q" placeholder="Buscar productos..." style="width:50%;padding:.8rem 1.5rem;border-radius:25px 0 0 25px;border:1px solid #ddd;border-right:none;font-size:1rem;">
+      <button class="search-btn" type="submit" style="padding:.8rem 1.5rem;border-radius:0 25px 25px 0;border:1px solid #ddd;background:#f8f8f8;cursor:pointer;">🔍</button>
+    </form>
   </header>
 
   <section class="hero">
@@ -292,8 +292,6 @@
       { id:10, nombre:"Volante Gamer Force Feedback", precio:1800000, imagenes:["https://images.unsplash.com/photo-1576153192396-180ecef15b0c?q=80&w=1974"], descripcion:"Volante con force feedback 900° y pedales metálicos", marca:"LOGITECH" }
     ];
 
-    // carrito
-    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
     // notificación breve
     function mostrarNotificacion(mensaje){
@@ -304,51 +302,6 @@
       setTimeout(()=> n.remove(),2400);
     }
 
-    // agregar al carrito
-    function agregarAlCarrito(id){
-      const producto = productosGaming.find(p=>p.id===id);
-      if(producto){
-        carrito.push(producto);
-        localStorage.setItem('carrito', JSON.stringify(carrito));
-        actualizarCarrito();
-        animarCarrito();
-        mostrarNotificacion('Producto agregado al carrito');
-      }
-    }
-    function animarCarrito(){ const cc = document.getElementById('cart-count'); cc.classList.add('animate'); setTimeout(()=>cc.classList.remove('animate'),500); }
-
-    function actualizarCarrito(){
-      const cartCount = document.getElementById('cart-count');
-      const cartItems = document.getElementById('cart-items');
-      const cartTotal = document.getElementById('cart-total');
-      cartCount.textContent = carrito.length;
-      cartItems.innerHTML = '';
-      let total = 0;
-      carrito.forEach((item, index) => {
-        total += item.precio;
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `<span>${item.nombre}</span><span>$${item.precio.toLocaleString()}</span>\n          <button onclick="eliminarDelCarrito(${index})" style="background:#ff4757;color:#fff;border:none;padding:.3rem .6rem;border-radius:5px;cursor:pointer">×</button>`;
-        cartItems.appendChild(div);
-      });
-      cartTotal.textContent = total.toLocaleString();
-    }
-    function eliminarDelCarrito(i){ carrito.splice(i,1); localStorage.setItem('carrito',JSON.stringify(carrito)); actualizarCarrito(); }
-
-    function toggleCart(){
-      const m = document.getElementById('cart-modal');
-      m.style.display = m.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function checkout(){
-      if(carrito.length===0){ alert('Tu carrito está vacío'); return; }
-      let msg="Hola! Quiero hacer el siguiente pedido de productos gaming:%0A%0A"; let total=0;
-      carrito.forEach(i=>{ msg += `• ${i.nombre} - $${i.precio.toLocaleString()}%0A`; total+=i.precio; });
-      msg += `%0ATotal: $${total.toLocaleString()}%0A%0AMi información:%0ANombre:%0ADirección:%0ATel:`;
-      window.open(`https://wa.me/573001234567?text=${msg}`,'_blank');
-    }
-
-    /* ====== GRID RENDER ====== */
     function cargarProductosGaming(){
       const container = document.getElementById('gaming-products');
       container.innerHTML = '';
@@ -499,5 +452,6 @@
       }
     });
   </script>
+  <script src="carrito.js"></script>
 </body>
 </html>

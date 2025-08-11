@@ -82,6 +82,31 @@ ALTER TABLE `productos`
 --
 ALTER TABLE `productos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `carrito`
+--
+CREATE TABLE `carrito` (
+  `id` int(11) NOT NULL,
+  `session_id` varchar(128) NOT NULL,
+  `producto_id` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Índices de la tabla `carrito`
+ALTER TABLE `carrito`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `producto_id` (`producto_id`);
+
+-- AUTO_INCREMENT de la tabla `carrito`
+ALTER TABLE `carrito`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- Restricciones para la tabla `carrito`
+ALTER TABLE `carrito`
+  ADD CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

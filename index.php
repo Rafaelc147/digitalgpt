@@ -742,28 +742,28 @@
     <header>
         <div class="header-content">
             <div class="logo">
-                <a href="index.html" style="text-decoration: none; color: inherit;">
+                <a href="index.php" style="text-decoration: none; color: inherit;">
                     <h1>DIGITAL RP</h1>
                 </a>
             </div>
             <nav>
                 <ul>
-                    <li><a href="componentes.html">Componentes</a></li>
-                    <li><a href="audio.html">Audio</a></li>
-                    <li><a href="cableado.html">Cableado</a></li>
-                    <li><a href="gaming.html">Gaming</a></li>
-                    <li><a href="electronica.html">Electrónica</a></li>
-                    <li><a href="varios.html">Varios</a></li>
+                    <li><a href="componentes.php">Componentes</a></li>
+                    <li><a href="audio.php">Audio</a></li>
+                    <li><a href="cableado.php">Cableado</a></li>
+                    <li><a href="gaming.php">Gaming</a></li>
+                    <li><a href="electronica.php">Electrónica</a></li>
+                    <li><a href="varios.php">Varios</a></li>
                 </ul>
             </nav>
             <a href="#" class="cart-btn" onclick="toggleCart()">
                 🛒 Carrito <span class="cart-count" id="cart-count">0</span>
             </a>
         </div>
-        <div class="search-container">
-            <input type="text" id="search-bar" placeholder="Buscar productos...">
-            <button class="search-btn">🔍</button>
-        </div>
+        <form class="search-container" action="buscar.php" method="GET">
+            <input type="text" id="search-bar" name="q" placeholder="Buscar productos...">
+            <button class="search-btn" type="submit">🔍</button>
+        </form>
     </header>
 
     <section class="hero">
@@ -778,41 +778,41 @@
         <div class="categories-container">
             <h2 class="section-title">Nuestras Categorías</h2>
             <div class="categories-grid">
-                <div class="category-card" onclick="window.location.href='componentes.html'">
+                <div class="category-card" onclick="window.location.href='componentes.php'">
                     <div class="category-icon">🖥️</div>
                     <h3>Componentes y Periféricos</h3>
                     <p>Mouses, teclados, monitores y más componentes esenciales</p>
-                    <a href="componentes.html" class="category-btn">Ver Productos</a>
+                    <a href="componentes.php" class="category-btn">Ver Productos</a>
                 </div>
-                <div class="category-card" onclick="window.location.href='audio.html'">
+                <div class="category-card" onclick="window.location.href='audio.php'">
                     <div class="category-icon">🎵</div>
                     <h3>Audio</h3>
                     <p>Audífonos, bocinas y equipos de sonido profesional</p>
-                    <a href="audio.html" class="category-btn">Ver Productos</a>
+                    <a href="audio.php" class="category-btn">Ver Productos</a>
                 </div>
-                <div class="category-card" onclick="window.location.href='cableado.html'">
+                <div class="category-card" onclick="window.location.href='cableado.php'">
                     <div class="category-icon">🔌</div>
                     <h3>Cableado</h3>
                     <p>Cables, adaptadores y accesorios de conectividad</p>
-                    <a href="cableado.html" class="category-btn">Ver Productos</a>
+                    <a href="cableado.php" class="category-btn">Ver Productos</a>
                 </div>
-                <div class="category-card" onclick="window.location.href='gaming.html'">
+                <div class="category-card" onclick="window.location.href='gaming.php'">
                     <div class="category-icon">🎮</div>
                     <h3>Gaming</h3>
                     <p>Sillas gamer, pantallas y accesorios para gamers</p>
-                    <a href="gaming.html" class="category-btn">Ver Productos</a>
+                    <a href="gaming.php" class="category-btn">Ver Productos</a>
                 </div>
-                <div class="category-card" onclick="window.location.href='electronica.html'">
+                <div class="category-card" onclick="window.location.href='electronica.php'">
                     <div class="category-icon">💡</div>
                     <h3>Electrónica</h3>
                     <p>Componentes y dispositivos electrónicos</p>
-                    <a href="electronica.html" class="category-btn">Ver Productos</a>
+                    <a href="electronica.php" class="category-btn">Ver Productos</a>
                 </div>
-                <div class="category-card" onclick="window.location.href='varios.html'">
+                <div class="category-card" onclick="window.location.href='varios.php'">
                     <div class="category-icon">📦</div>
                     <h3>Varios</h3>
                     <p>Productos y accesorios diversos</p>
-                    <a href="varios.html" class="category-btn">Ver Productos</a>
+                    <a href="varios.php" class="category-btn">Ver Productos</a>
                 </div>
             </div>
         </div>
@@ -936,85 +936,6 @@
             ]
         };
 
-        // Carrito de compras
-        let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-        // Función para agregar al carrito (reutilizada por el carrusel)
-        function agregarAlCarrito(id) {
-            let producto = null;
-            for (let categoria in productos) {
-                producto = productos[categoria].find(p => p.id === id);
-                if (producto) break;
-            }
-
-            if (producto) {
-                carrito.push(producto);
-                localStorage.setItem('carrito', JSON.stringify(carrito));
-                actualizarCarrito();
-                mostrarNotificacion('Producto agregado al carrito');
-            }
-        }
-
-        // Función para actualizar el carrito
-        function actualizarCarrito() {
-            const cartCount = document.getElementById('cart-count');
-            const cartItems = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
-
-            cartCount.textContent = carrito.length;
-
-            cartItems.innerHTML = '';
-            let total = 0;
-
-            carrito.forEach((item, index) => {
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <span>${item.nombre}</span>
-                    <span>$${item.precio.toLocaleString()}</span>
-                    <button onclick="eliminarDelCarrito(${index})" style="background: #ff4757; color: white; border: none; padding: 0.2rem 0.5rem; border-radius: 5px; cursor: pointer;">×</button>
-                `;
-                cartItems.appendChild(cartItem);
-                total += item.precio;
-            });
-
-            cartTotal.textContent = total.toLocaleString();
-        }
-
-        // Función para eliminar del carrito
-        function eliminarDelCarrito(index) {
-            carrito.splice(index, 1);
-            localStorage.setItem('carrito', JSON.stringify(carrito));
-            actualizarCarrito();
-        }
-
-        // Función para alternar el carrito
-        function toggleCart() {
-            const cartModal = document.getElementById('cart-modal');
-            cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Función para proceder al pago
-        function checkout() {
-            if (carrito.length === 0) {
-                alert('Tu carrito está vacío');
-                return;
-            }
-
-            // Crear mensaje para WhatsApp
-            let mensaje = "Hola! Quiero hacer el siguiente pedido:%0A%0A";
-            let total = 0;
-
-            carrito.forEach(item => {
-                mensaje += `• ${item.nombre} - $${item.precio.toLocaleString()}%0A`;
-                total += item.precio;
-            });
-
-            mensaje += `%0ATotal: $${total.toLocaleString()}%0A%0A¿Podrían confirmar disponibilidad y método de pago?`;
-
-            // Abrir WhatsApp con el mensaje
-            window.open(`https://wa.me/573001234567?text=${mensaje}`, '_blank');
-        }
 
         // Función para mostrar notificaciones
         function mostrarNotificacion(mensaje) {
@@ -1273,7 +1194,7 @@
                 });
             }
 
-            // inicializar carrito (si había en localStorage)
+            // inicializar carrito desde servidor
             actualizarCarrito();
 
             // inicializar carrusel
@@ -1282,5 +1203,6 @@
             startAutoplay();
         });
     </script>
+    <script src="carrito.js"></script>
 </body>
 </html>
